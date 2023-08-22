@@ -1,0 +1,30 @@
+{% extends 'catalog/home.html' %}
+
+{% block content %}
+<div class="col-12 mb-5">
+    <a href="{% url 'notebook:create' %}" class="btn btn-primary">Создать запись</a>
+</div>
+{% for object in object_list %}
+<div class="col-md-4">
+    <div class="card mb-4 box-shadow">
+        <div class="card-body">
+             <p class="card-text">
+                 {{ object|title }}
+             </p>
+            <div class="d-flex-content-between align-items-center">
+                <div class="btn-group">
+                    <a type="button" class="btn btn-sm btn-outline-secondary"
+                       href="{% url 'notebook:view' object.pk %}">View</a>
+                    <a type="button" class="btn btn-sm btn-outline-secondary"
+                       href="{% url 'notebook:edit' object.pk %}">Edit</a>
+                    <a type="button" class="btn btn-sm btn-outline-secondary"
+                       href="{% url 'notebook:delete' object.pk %}">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+
+{% endblock %}

@@ -19,6 +19,10 @@
 
                     </ul>
                     <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
+                    <div class="card-footer">
+                        <a class="btn btn-link" href="{% url 'catalog:product_update' object.pk %}">Изменить</a>
+                        <a class="btn btn-outline-danger" href="{% url 'catalog:product_delete' object.pk %}">Удалить</a>
+                    </div>
                 </div>
             </div>
         </div>
