@@ -24,5 +24,21 @@
                 </div>
             </div>
         </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    Версия
+                </div>
+                <div class="card-body">
+                    {{ formset.management_form }}
+                    {% for form in formset.forms %}
+                        {{ form.as_p }}
+                        {% if forloop.revcounter0 != 0 %}
+                            <hr>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </form>
 {% endblock %}
