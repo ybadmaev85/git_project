@@ -52,7 +52,7 @@ class CategoryListView(ListView):
 # def products(request, pk):
 #     category_item = Category.objects.get(pk=pk)
 #     context = {
-#         'object_list': Product.objects.filter(category_id=pk),
+#         'object_list': Product.objects.filter(category_id=pk, creator=request.user),
 #         'title': f'Товар категории {category_item.name}',
 #     }
 #     return render(request, 'catalog/product_list.html', context)
@@ -81,6 +81,13 @@ class ProductCreateView(CreateView):
     extra_context = {
         'title': 'Добавить товар',
     }
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.creator = self.request.user
+        self.object.save()
+        
+        return super().form_valid(form)
 
 
 class ProductUpdateView(UpdateView):

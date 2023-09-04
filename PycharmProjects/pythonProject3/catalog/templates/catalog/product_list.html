@@ -16,6 +16,7 @@
                 <div class="card-body">
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                         <li>{{ object.description }}</li>
+                        <li>{{ object.creator|default:"Создано богом" }}</li>
                         <li>{{ Version.object.name }} - {{ Version.object.num }}</li>
 
                     </ul>
