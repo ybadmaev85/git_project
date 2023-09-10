@@ -1,4 +1,7 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.forms import inlineformset_factory
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView, DetailView
@@ -16,7 +19,7 @@ def con(request):
     return render(request, 'catalog/contacts.html')
 
 
-class IndexView(TemplateView):
+class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'catalog/index.html'
     extra_context = {
         'title': 'Главная'
@@ -42,7 +45,8 @@ class IndexView(TemplateView):
 #     }
 #     return render(request, 'catalog/category_list.html', context)
 
-class CategoryListView(ListView):
+
+class CategoryListView(LoginRequiredMixin, ListView):
     model = Category
     extra_context = {
         'title': 'Все категории'
@@ -57,12 +61,15 @@ class CategoryListView(ListView):
 #     }
 #     return render(request, 'catalog/product_list.html', context)
 
-class ProductListView(ListView):
+class ProductListView(LoginRequiredMixin, ListView):
     model = Product
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.filter(category_id=self.kwargs.get('pk'))
+        queryset = super().get_queryset().filter(category_id=self.kwargs.get('pk'))
+
+        if not self.request.user.is_staff:
+            queryset = queryset.filter(creator=self.request.user)
+
         return queryset
 
     def get_context_data(self, *args, **kwargs):
@@ -74,9 +81,10 @@ class ProductListView(ListView):
         return context_data
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
+    permission_required = 'catalog.add_product'
     success_url = reverse_lazy('catalog:categories')
     extra_context = {
         'title': 'Добавить товар',
@@ -90,7 +98,7 @@ class ProductCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:home')
@@ -98,6 +106,11 @@ class ProductUpdateView(UpdateView):
         'title': 'Изменить товар',
     }
 
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.object.creator != self.request.user and not self.request.user.is_staff:
+            raise Http404
+        return self.object
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         VersionFormset = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
@@ -119,6 +132,9 @@ class ProductUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:categories')
+    extra_context = {
+        'title': 'Удалить товар',
+    }

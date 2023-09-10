@@ -140,8 +140,10 @@ AUTH_USER_MODEL = 'users.User'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
 
+LOGIN_URL = '/users/'
+
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'victor.badmaef@yandex.ru'
 EMAIL_HOST_PASSWORD = 'yaynvnwzlemevoal'
-EMAIL_USE_SSL = True
+EMAIL_USE_TLS = True
