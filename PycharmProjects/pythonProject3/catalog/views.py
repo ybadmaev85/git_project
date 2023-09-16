@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.cache import cache
 from django.forms import inlineformset_factory
 from django.http import Http404
 from django.shortcuts import render, redirect
@@ -8,6 +10,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, T
 
 from catalog.forms import ProductForm, VersionForm
 from catalog.models import Category, Product, Version
+from catalog.services import get_category_cache
 
 
 def con(request):
@@ -47,10 +50,14 @@ class IndexView(LoginRequiredMixin, TemplateView):
 
 
 class CategoryListView(LoginRequiredMixin, ListView):
+
     model = Category
     extra_context = {
+        'object_list' : get_category_cache(),
         'title': 'Все категории'
     }
+
+
 
 
 # def products(request, pk):
