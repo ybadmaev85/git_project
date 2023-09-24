@@ -1,0 +1,108 @@
+{% extends 'mailings/base.html' %}
+{% load custom_tags %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        {% if object.status.name == 'завершена' %}
+            <h1 class="mt-2 text-center">РАССЫЛКА(ЗАВЕРШЕНА)</h1>
+            <div class="card mt-2">
+                <h1 class="text-muted p-1">{{ object.title|upper }}</h1>
+                <hr>
+                <p class="text-muted">{{ object.body }} </p>
+                <hr>
+                <p class="text-muted"><b>Периодичность: </b>{{ object.regularity }}</p>
+                <p class="text-muted"><b>Время отправки: </b>{{ object.sending_time }}</p>
+                <div class="col-5 mb-3">
+                    <div class="row">
+                        <div class="col-2">
+                            <a href="{% url 'mailings:mailing_delete' object.slug %}"
+                               class="btn btn-danger">УДАЛИТЬ</a>
+                        </div>
+                        <div class="col-2">
+                            <a href="{% url 'mailings:mailing_list' %}" class="btn btn-success ms-5">НАЗАД</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <h1 class="mt-2 text-center">РАССЫЛКА</h1>
+            <div class="card mt-2">
+                <h1 class="p-1">{{ object.title|upper }}</h1>
+                <hr>
+                <p>{{ object.body }} </p>
+                <hr>
+                {% if object.regularity %}
+                    <p><b>Переодичность: </b>{{ object.regularity }}</p>
+                {% else %}
+                    <p><b>Переодичность: </b>Не указана</p>
+                {% endif %}
+                <p><b>Время отправки: </b>{{ object.sending_time }}</p>
+                {% if user|has_group:"manager" %}
+                    <p ><b>
+                        Пользователь:
+                        <a class="text-dark" href="{% url 'users:user_detail' object.user.pk %}">{{ object.user.email }}</a>
+                    </b></p>
+                {% endif %}
+                <div class="row">
+                    {% if object.status.name == 'создана' %}
+                        {% if user|has_group:"manager" %}
+                            <div class="row">
+                                <div class="col-9"></div>
+                                <div class="col-1 text-end">
+                                    <a href="{% url 'mailings:mailing_delete' object.slug %}"
+                                       class="btn btn-outline-dark">УДАЛИТЬ</a>
+                                </div>
+                                <div class="col-2 text-end">
+                                    <a href="{% url 'users:user_change_active' object.user.id%}" type="button"
+                                       class="btn btn-outline-dark mb-2">ЗАБЛОКИРОВАТЬ</a>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="col-1 text-start">
+                                <a href="{% url 'mailings:mailing_update' object.slug %}" class="btn btn-primary">
+                                    РЕДАКТИРОВАТЬ
+                                </a>
+                            </div>
+                            <div class="col-2 text-start">
+                                <a href="{% url 'mailings:mailing_delete' object.slug %}"
+                                   class="btn btn-danger ms-5 ">УДАЛИТЬ</a>
+                            </div>
+                            <div class="col-2 text-start mb-3">
+                                <a href="{% url 'mailings:mailing_list' %}" class="btn btn-success">НАЗАД</a>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        {% if user|has_group:"manager" %}
+                            <div class="row">
+                                <div class="col-9"></div>
+                                <div class="col-1 text-end">
+                                    <a href="{% url 'mailings:mailing_status' object.slug %}"
+                                       class="btn btn-outline-dark">ЗАВЕРШИТЬ</a>
+                                </div>
+                                <div class="col-2 text-end">
+                                    <a href="{% url 'users:user_change_active' object.user.id%}" type="button"
+                                       class="btn btn-outline-dark mb-2">ЗАБЛОКИРОВАТЬ</a>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="row">
+                                <div class="col-1 text-start">
+                                    <a href="{% url 'mailings:mailing_status' object.slug %}"
+                                       class="btn btn-danger">ЗАВЕРШИТЬ</a>
+                                </div>
+                                <div class="col-1 text-start">
+                                    <a href="{% url 'mailings:mailing_list' %}" class="btn btn-success mb-3 ms-4">
+                                        НАЗАД
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

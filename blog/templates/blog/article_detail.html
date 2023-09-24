@@ -1,0 +1,25 @@
+{% extends 'mailings/base.html' %}
+{% load custom_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="card col-6 text-start">
+            <div class="card-title">
+                <h1>{{ object.title }}</h1>
+                <hr>
+            </div>
+            <div class="card-body">
+                <p>{{ object.body }}</p>
+            </div>
+        </div>
+        <div class="col-6">
+            <img src="{{ object.image|mediapath }}" class="img-thumbnail" height="2000" width="1333">
+            <div class="card mt-5 p-3">
+                <p>Дата публикации: <b>{{ object.publish_date }}</b></p>
+                <p>Количество просмотров: <b>{{ object.view_count }}</b></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

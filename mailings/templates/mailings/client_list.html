@@ -1,0 +1,30 @@
+{% extends 'mailings/base.html' %}
+
+{% block content %}
+<div class="container text-center mt-5 mb-5">
+    <h1 class="mt-5">КЛИЕНТЫ</h1>
+    <div class="row">
+        <div class="col-2 text-start"><a href="{% url 'mailings:client_create' %}"
+                                         class="btn btn-dark">+ КЛИЕНТ</a></div>
+    </div>
+    <div class="row mt-2">
+        {% for object in object_list %}
+            <div class="col-3">
+                <a href="{% url 'mailings:client_detail' object.pk %}" class="link-light">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                        <div class="card-header">{{ object.email }}</div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ object.fullname }}</h5>
+                            <hr>
+                            <a href="{% url 'mailings:client_update' object.id%}" type="button"
+                               class="btn btn-dark">Обновить</a>
+                            <a href="{% url 'mailings:client_delete' object.id%}" type="button"
+                               class="btn btn-dark">Удалить</a>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

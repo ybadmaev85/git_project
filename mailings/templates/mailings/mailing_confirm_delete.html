@@ -1,0 +1,30 @@
+{% extends 'mailings/base.html' %}
+{% load custom_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <form method="post" class="card">
+            {% csrf_token %}
+            <h2>Вы действительно хотите удалить рассылку "{{ object.title|upper }}"?</h2>
+            <div class="row mt-1 mb-2">
+                {% if user|has_group:"manager" %}
+                    <div class="col-1 ">
+                        <button class="btn btn-outline-dark" type="submit">УДАЛИТЬ</button>
+                    </div>
+                    <div class="col-1">
+                        <a class="btn btn-outline-dark" href="{% url 'mailings:manager_mailing_list' %}">НАЗАД</a>
+                    </div>
+                {% else %}
+                    <div class="col-1 ">
+                        <button class="btn btn-danger" type="submit">УДАЛИТЬ</button>
+                    </div>
+                    <div class="col-1">
+                        <a class="btn btn-primary" href="{% url 'mailings:mailing_list' %}">НАЗАД</a>
+                    </div>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

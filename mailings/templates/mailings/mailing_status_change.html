@@ -1,0 +1,34 @@
+{% extends 'mailings/base.html' %}
+{% load custom_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <form method="post" class="card">
+            {% csrf_token %}
+            <h2>Вы действительно хотите перевести рассылку "{{ object.title|upper }}" в завершенные?</h2>
+            <p class="mb-3 fw-semibold lh-1 mt-3">Вы не сможете вновь её активировать...</p>
+            <div class="row mt-1 mb-2">
+                <div class="col-1 ">
+                    {% if user|has_group:"manager" %}
+                        <button type="submit" class="btn btn-outline-dark">
+                                ПЕРЕВЕСТИ
+                        </button>
+                    {% else %}
+                        <button type="submit" class="btn btn-danger">
+                                ПЕРЕВЕСТИ
+                        </button>
+                    {% endif %}
+                </div>
+                <div class="col-1 ms-2">
+                    {% if user|has_group:"manager" %}
+                        <a class="btn btn-outline-dark" href="{% url 'mailings:manager_mailing_list' %}">НАЗАД</a>
+                    {% else %}
+                        <a class="btn btn-primary" href="{% url 'mailings:mailing_list' %}">НАЗАД</a>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'mailings/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <form method="post" class="card">
+            {% csrf_token %}
+            {% if object.is_active %}
+                <h2>Вы действительно хотите заблокировать пользователя "{{ object.email }}"?</h2>
+                <p class="mb-3 fw-semibold lh-1 mt-3">Вы также сможете его разблокировать позже.</p>
+            {% else %}
+                <h2>Вы действительно хотите разблокировать пользователя "{{ object.email }}"?</h2>
+                <p class="mb-3 fw-semibold lh-1 mt-3">Вы также сможете его заблокировать позже.</p>
+            {% endif %}
+            <div class="row mt-1 mb-2">
+                <div class="col-1 me-5 ">
+                    <button type="submit" class="btn btn-outline-dark">
+                        {% if object.is_active %}
+                            ЗАБЛОКИРОВАТЬ
+                        {% else %}
+                            РАЗБЛОКИРОВАТЬ
+                        {% endif %}
+                    </button>
+                </div>
+                {% if object.is_active %}
+                    <div class="col-1 ms-2">
+                        <a class="btn btn-outline-dark" href="{% url 'users:user_list' %}">НАЗАД</a>
+                    </div>
+                {% else %}
+                    <div class="col-1 ms-3">
+                        <a class="btn btn-outline-dark" href="{% url 'users:user_list' %}">НАЗАД</a>
+                    </div>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

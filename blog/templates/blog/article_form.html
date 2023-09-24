@@ -1,0 +1,24 @@
+{% extends 'mailings/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <form method="post" class="card text-dark p-3 m-2" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if object %}
+                    <h3 class="text-center">ОБНОВЛЕНИЕ СТАТЬИ</h3>
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-outline-dark" >ОБНОВИТЬ</button>
+                {% else %}
+                    <h3 class="text-center">СОЗДАНИЕ СТАТЬИ</h3>
+                    {{ form|crispy}}
+                    <button type="submit" class="btn btn-outline-dark" >СОЗДАТЬ</button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

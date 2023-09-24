@@ -1,0 +1,85 @@
+{% extends 'mailings/base.html' %}
+{% load custom_tags %}
+{% load cache %}
+
+{% block content %}
+<div class="container mt-5">
+    {% cache 3600 "index-inf" %}
+        <div class="container-xxl bd-gutter mt-5">
+            <div class="col-md-8 mx-auto text-center">
+                <strong class="d-sm-inline-block p-2 me-2 mb-2 mb-lg-0 rounded-3 masthead-notice">САМЫЙ ЛУЧШИЙ
+                    СЕРВИС РАССЫЛОК</strong>
+                <span class="text-body-secondary">Просто, быстро, эффективно - наши рассылки!</span>
+                <h1 class="mb-3 fw-semibold lh-1 mt-3">ПОПРОБУЙТЕ SEND BAND ПРЯМО СЕЙЧАС!<hr></h1>
+                <p class="lead mb-4 text-center">
+                    Добро пожаловать в мир <b>SEND BAND</b>, где ваши сообщения становятся мелодией успеха!
+                </p>
+                <p class="lead mb-4 text-center">
+                    <b>SEND BAND</b> - это инструмент, который поможет вам донести ваше послание до аудитории точно в тот
+                    момент,
+                    когда это наиболее важно. С нами вы сможете создавать мощные рассылки e-mail сообщений с легкостью и
+                    эффективностью, которая приведет к результатам.
+                </p>
+                <p class="lead mb-4 text-center">
+                    С <b>SEND BAND</b>, ваше сообщение - это не просто слова, это мелодия, которая достигает сердец и ума
+                    ваших
+                    клиентов. Присоединяйтесь к нам, и давайте вместе создадим гармонию в вашей коммуникации!
+                </p>
+                <p class="lead mb-4 text-center">
+                    Ваши сообщения – наша гармония. <b>SEND BAND</b> – доставка с результатами!
+                </p>
+                <a class="btn btn-dark btn-lg" href="{% url 'mailings:mailing_list' %}">СОЗДАТЬ РАССЫЛКУ</a>
+            </div>
+        </div>
+    {% endcache %}
+    {% cache 3600 "index-about" %}
+        <h1 class="mt-5 text-center">ПОЧЕМУ ИМЕННО МЫ?</h1>
+    {% endcache %}
+    <div class="row mt-4">
+        <div class="col-4 text-center">
+            <p class="fs-5"><b>Всего рассылок:</b> {{ total_mailings }}</p>
+        </div>
+        <div class="col-4 text-center">
+            <p class="fs-5"><b>Активных рассылок:</b> {{ active_mailings }}</p>
+        </div>
+        <div class="col-4 text-center">
+            <p class="fs-5"><b>Уникальных клиентов:</b> {{ unique_clients }}</p>
+        </div>
+    </div>
+    {% cache 3600 "index-img" %}
+        <div class="row mt-2">
+            <div class="col-12 text-center">
+                <img src="{{ 'logo/main.png'|mediapath }}" class="img-thumbnail">
+            </div>
+        </div>
+    {% endcache %}
+    {% if blog_articles %}
+        <div class="row mt-2">
+            {% cache 3600 "index-blog" %}
+                <h1 class="mt-5 text-center">БЛОГ - ЛУЧШИЙ ИНФОРМАТОР</h1>
+            {% endcache %}
+            {% for object in blog_articles %}
+                <div class="col-12">
+                    <div class="card mb-3 mt-3" style="max-width: 1500px;">
+                        <div class="row g-0">
+                            <div class="col-md-3">
+                                <img src="{{ object.image|mediapath }}" class="img-fluid rounded-start p-2" alt="...">
+                            </div>
+                            <div class="col-9">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ object.title|upper }}</h5>
+                                    <p class="card-text">
+                                        {{ object.body|slice:"500" }}...
+                                        <a href="{% url 'blog:article_detail' object.pk %}">читать далее</a>
+                                    </p>
+                                    <p><b>Дата публикации: </b>{{ object.publish_date }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

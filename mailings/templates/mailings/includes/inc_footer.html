@@ -1,0 +1,44 @@
+{% load custom_tags %}
+
+<div class="container">
+    <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="{% url 'mailings:index' %}" class="nav-link px-2 text-muted">Главная</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Блог</a></li>
+            {% if user.is_authenticated %}
+                {% if user|has_group:"service_users" %}
+                    <li class="nav-item">
+                        <a href="{% url 'mailings:mailing_list' %}" class="nav-link px-2 text-muted">Рассылки</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'mailings:client_list' %}" class="nav-link px-2 text-muted">Клиенты</a>
+                    </li>
+                {% endif %}
+                {% if user|has_group:"manager" %}
+                    <li class="nav-item">
+                        <a href="{% url 'users:user_list' %}" class="nav-link px-2 text-muted">Пользователи</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'mailings:manager_mailing_list' %}" class="nav-link px-2 text-muted">Рассылки</a>
+                    </li>
+                {% endif %}
+                    <li class="nav-item">
+                        <a href="{% url 'users:logout' %}" class="nav-link px-2 text-muted">Выйти</a>
+                    </li>
+                {% if user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:index' %}" class="nav-link px-2 text-muted">Админка</a>
+                    </li>
+                {% endif %}
+            {% else %}
+                <li class="nav-item">
+                    <a href="{% url 'users:login' %}" class="nav-link px-2 text-muted">Войти</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'users:register' %}" class="nav-link px-2 text-muted">Создать аккаунт</a>
+                </li>
+            {% endif %}
+        </ul>
+        <p class="text-center text-muted">© {% now 'Y' %} SEND BAND</p>
+    </footer>
+</div>

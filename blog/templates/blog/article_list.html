@@ -1,0 +1,59 @@
+{% extends 'mailings/base.html' %}
+{% load custom_tags %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-5"></div>
+        <div class="col-5">
+            <h1>ВСЕ СТАТЬИ</h1>
+        </div>
+    </div>
+    <div class="row">
+        {% if user|has_group:"blog_manager" %}
+            <div class="col-12 text-start">
+                <a class="btn btn-outline-dark text-end" href="{% url 'blog:article_create' %}">ДОБАВИТЬ СТАТЬЮ</a>
+            </div>
+        {% endif %}
+    </div>
+    {% for object in object_list %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-3 mt-3" style="max-width: 1500px;">
+                    <div class="row g-0">
+                        <div class="col-md-3">
+                            <img src="{{ object.image|mediapath }}" class="img-fluid rounded-start p-2" alt="...">
+                        </div>
+                        <div class="col-9">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ object.title|upper }}</h5>
+                                <p class="card-text">
+                                    {{ object.body|slice:"500" }}...
+                                    <a href="{% url 'blog:article_detail' object.pk %}">читать далее</a>
+                                </p>
+                                <p><b>Дата публикации: </b>{{ object.publish_date }}</p>
+                            </div>
+                        </div>
+                        {% if user|has_group:"blog_manager" %}
+                            <hr>
+                            <div class="row p-2">
+                                <div class="col-9"></div>
+                                <div class="col-2 text-end">
+                                    <a class="btn btn-outline-dark" href="{% url 'blog:article_update' object.pk %}">
+                                        ОБНОВИТЬ
+                                    </a>
+                                </div>
+                                <div class="col-1 text-end">
+                                    <a class="btn btn-outline-dark text-end" href="{% url 'blog:article_delete' object.pk %}">
+                                        УДАЛИТЬ
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

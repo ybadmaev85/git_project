@@ -1,0 +1,32 @@
+{% extends 'mailings/base.html' %}
+
+{% block content %}
+<div class="container text-center mt-5 mb-5">
+    <h1 class="text-center mb-3">ЛОГИ РАССЫЛОК</h1>
+    {% for object in object_list %}
+        <div class="card mt-4 p-2">
+            <div class="row mt-1 ms-1">
+                <div class="col-5">
+                    <a href="{% url 'mailings:mailing_detail' object.mailing.slug %}">
+                        {% if object.mailing.title|length >= 22 %}
+                            <h3 class="text-start text-dark mt-1">{{ object.mailing.title|upper|slice:":22" }}...</h3>
+                        {% else %}
+                            <h3 class="text-start text-dark mt-1">{{ object.mailing.title|upper }}</h3>
+                        {% endif %}
+                    </a>
+                </div>
+                <div class="col-4">
+                    <p class="fs-4 text-start">{{ object.attempt_datetime }}</p>
+                </div>
+                <div class="col-3">
+                    {% if object.status %}
+                        <b class="text-success fs-4 text-start">OK</b>
+                    {% else %}
+                        <b class="text-danger fs-4 text-start">ERROR</b>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

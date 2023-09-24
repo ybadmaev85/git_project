@@ -1,0 +1,113 @@
+{% extends 'mailings/base.html' %}
+
+{% block content %}
+
+<div class="container text-center mt-5 mb-5">
+    <h1 class="mt-5">ЗАПЛАНИРОВАННЫЕ</h1>
+    <div class="row">
+        <div class="col-2 text-start"><a href="{% url 'mailings:mailing_create' %}"
+                                         class="btn btn-success">+ РАССЫЛКА</a></div>
+        <div class="col-9"></div>
+        <div class="col-1">
+            <a href="{% url 'mailings:mailing_logs_list' %}" class="btn btn-dark">ЛОГИ</a>
+        </div>
+    </div>
+    <div class="row">
+        {% for object in object_list %}
+            {% if object.status.name == "создана" %}
+                <div class="col-sm-4 mb-3 mb-sm-0">
+                    <div class="card mt-2">
+                        <a href="{% url 'mailings:mailing_detail' object.slug %}"
+                           class="link-dark">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ object.title|upper }}</h5>
+                                <p class="card-text text-start">{{ object.body|slice:":100" }}...</p>
+                                <p class="card-text text-start"><b>Время отправки: </b>{{ object.sending_time }}</p>
+                                {% if object.regularity %}
+                                    <p class="card-text text-start"><b>Периодичность: </b>{{ object.regularity }}</p>
+                                {% else %}
+                                    <p class="card-text text-start"><b>Периодичность: </b>Не указана</p>
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col-5">
+                                        <a href="{% url 'mailings:mailing_update' object.slug %}"
+                                           class="btn btn-primary mt-4 ">РЕДАКТИРОВАТЬ</a>
+                                    </div>
+                                    <div class="col-2">
+                                        <a href="{% url 'mailings:mailing_delete' object.slug %}"
+                                           class="btn btn-danger mt-4 ">УДАЛИТЬ</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+<div class="container text-center mt-5 mb-5">
+    <h1 class="mt-5">ЗАПУЩЕННЫЕ</h1>
+    <div class="row">
+        {% for object in object_list %}
+            {% if object.status.name == "запущена" %}
+                <div class="col-sm-4 mb-3 mb-sm-0 ">
+                    <div class="card mt-2">
+                        <a href="{% url 'mailings:mailing_detail' object.slug %}"
+                           class="link-dark">
+                            <div class="card-body mt-2">
+                                <h5 class="card-title">{{ object.title|upper }}</h5>
+                                <p class="card-text text-start">{{ object.body|slice:":100" }}...</p>
+                                <p class="card-text text-start"><b>Время отправки: </b>{{ object.sending_time }}</p>
+                                <p class="card-text text-start"><b>Периодичность: </b>{{ object.regularity }}</p>
+                                <div class="row">
+                                    <div class="col-2">
+                                        <a href="{% url 'mailings:mailing_status' object.slug %}"
+                                           class="btn btn-danger mt-2 ">ЗАВЕРШИТЬ</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+<div class="container text-center mt-5 mb-5">
+    <h1 class="mt-5">ЗАВЕРШЕННЫЕ</h1>
+    <div class="row">
+        {% for object in object_list %}
+            {% if object.status.name == "завершена" %}
+                <div class="col-sm-4 mb-3 mb-sm-0">
+                    <div class="card mt-2">
+                        <a href="{% url 'mailings:mailing_detail' object.slug %}"
+                           class="link-dark">
+                            <div class="card-body">
+                                <h5 class="card-title text-muted">{{ object.title|upper }}</h5>
+                                <p class="card-text text-start text-muted">{{ object.body|slice:":100" }}...</p>
+                                <p class="card-text text-start text-muted"><b>Время отправки:
+                                </b>{{ object.sending_time }}
+                                </p>
+                                {% if object.regularity %}
+                                    <p class="card-text text-start text-muted">
+                                        <b>Периодичность: </b>{{ object.regularity }}
+                                    </p>
+                                {% else %}
+                                    <p class="card-text text-start text-muted"><b>Периодичность: </b>Не указана</p>
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col-2">
+                                        <a href="{% url 'mailings:mailing_delete' object.slug %}"
+                                           class="btn btn-danger mt-2 ">УДАЛИТЬ</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'mailings/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="card">
+            <div class="card-title text-start">
+                <h3 class="p-2 mt-1 ms-2">E-mail адрес подтвержден!</h3>
+            </div>
+            <div class="card-body">
+                <p class="fs-5">Вы успешно подтвердили свой почтовый ящик!</p>
+                <a href="{% url 'users:login' %}" class="btn btn-dark">Войти в аккаунт</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

@@ -1,0 +1,34 @@
+{% extends 'mailings/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <h1 class="mt-2 text-center">ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЕ</h1>
+        <div class="card mt-2">
+            <div class="card-title">
+                <h3 class="p-1"><b>E-mail адрес:</b> {{ object.email }}</h3>
+            </div>
+            <hr>
+            <div class="card-body">
+                <p class="fs-5"><b>Всего рассылок: </b>{{ total_mailings }}
+                <p class="fs-5"><b>Созданных рассылок: </b>{{ created_mailings }}</p>
+                <p class="fs-5"><b>Запущенных рассылок: </b>{{ running_mailings }}</p>
+                <div class="row">
+                    <div class="col-10"></div>
+                    <div class="col-2 text-end">
+                        {% if object.is_active %}
+                            <a href="{% url 'users:user_change_active' object.id%}" type="button"
+                           class="btn btn-outline-dark mb-2">Заблокировать</a>
+                        {% else %}
+                            <a href="{% url 'users:user_change_active' object.id%}" type="button"
+                               class="btn btn-outline-dark mb-2">Разблокировать</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

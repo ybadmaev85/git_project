@@ -1,0 +1,19 @@
+{% extends 'mailings/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="card">
+            <div class="card-title text-start">
+                <h3 class="p-2 mt-1 ms-2">Подтверждение e-mail адреса</h3>
+            </div>
+            <div class="card-body">
+                <p class="fs-5">На ваш почтовый ящик было отправлено письмо с подтверждением!</p>
+                <p class="text-muted">Перейдите по ссылке в письме, чтобы подтвердить аккаунт.</p>
+                <a href="{% url 'mailings:index' %}" class="btn btn-dark">На главную</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

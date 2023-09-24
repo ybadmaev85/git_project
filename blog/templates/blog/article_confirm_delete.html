@@ -1,0 +1,21 @@
+{% extends 'mailings/base.html' %}
+{% load custom_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <form method="post" class="card">
+            {% csrf_token %}
+            <h2>Вы действительно хотите удалить статью "{{ object.title|upper }}"?</h2>
+            <div class="row mt-1 mb-2">
+                <div class="col-1 ">
+                    <button class="btn btn-outline-dark" type="submit">УДАЛИТЬ</button>
+                </div>
+                <div class="col-1">
+                    <a class="btn btn-outline-dark" href="{% url 'blog:article_list' %}">НАЗАД</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

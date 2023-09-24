@@ -1,0 +1,70 @@
+{% load custom_tags %}
+
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'mailings:index' %}">SEND BAND</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'mailings:index' %}">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'blog:article_list' %}">Блог</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        {% if user|has_group:"service_users" %}
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{% url 'mailings:mailing_list' %}">
+                                    Рассылки
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{% url 'mailings:client_list' %}">
+                                    Клиенты
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if user|has_group:"manager" %}
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{% url 'users:user_list' %}">
+                                    Пользователи
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page"
+                                   href="{% url 'mailings:manager_mailing_list' %}">
+                                    Рассылки
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link active ms-5" aria-current="page" href="{% url 'users:logout' %}">
+                                Выйти
+                            </a>
+                        </li>
+                        {% if user.is_superuser %}
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{% url 'admin:index' %}">
+                                    Админка
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li class="nav-item ms-10">
+                            <a class="nav-link active ms-5" aria-current="page" href="{% url 'users:login' %}">
+                                Войти
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'users:register' %}">
+                                Создать аккаунт
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <hr>
+</div>
